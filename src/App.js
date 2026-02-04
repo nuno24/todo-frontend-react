@@ -1,5 +1,6 @@
 import './App.css';
 import {useEffect, useState} from 'react'
+import TodoList from '../src/components/TodoList'
 import { getTodos } from './services/todos';
 
 function App() {
@@ -24,14 +25,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Todo list</h1>
-      {todos ? (
-        todos.map((todo) => {
-          return <li key={todo.id}>{todo.description}</li>
-        })
-      ):(
-        <div>NO TODOS </div>
-      )}
+      <h1>Todo App</h1>
+      <TodoList todos={todos}/>
     </div>
   );
 }
