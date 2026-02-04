@@ -3,9 +3,10 @@ import type { Todo as TodoType } from '../types/todo'
 
 type TodoListProps = {
   todos: TodoType[];
+  onDelete: (id:string) => void
 };
 
-const TodoList = ({ todos }: TodoListProps) => {
+const TodoList = ({ todos, onDelete }: TodoListProps) => {
   if (todos.length === 0) return <h2>No TODOS</h2>
 
 
@@ -17,6 +18,7 @@ const TodoList = ({ todos }: TodoListProps) => {
           <Todo 
             key={todo.id}
             todo={todo}
+            onDelete={onDelete}
           />
         ))
         }

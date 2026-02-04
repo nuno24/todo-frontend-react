@@ -1,10 +1,11 @@
 import type { Todo as TodoType } from '../types/todo';
 
 type TodoProps = {
-  todo: TodoType;
+  todo: TodoType
+  onDelete: (id: string) => void
 };
 
-const Todo = ({ todo }: TodoProps) => {
+const Todo = ({ todo, onDelete }: TodoProps) => {
   
   
   return(
@@ -16,7 +17,7 @@ const Todo = ({ todo }: TodoProps) => {
       <p>{todo.id}</p>
       <div>
         <button>Edit</button>
-        <button>Delete</button>
+        <button onClick={() => onDelete(todo.id)}>Delete</button>
       </div>
     </div>
   )

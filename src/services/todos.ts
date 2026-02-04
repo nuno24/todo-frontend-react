@@ -30,3 +30,16 @@ export const createTodo = async (input: CreateTodoInput): Promise<Todo> => {
   }
   return (await res.json()) as Todo
 }
+
+export const deleteTodo = async (id: string) => {
+  const res = await fetch(`http://localhost:3000/todo/${id}`, {
+    method: 'DELETE',
+    headers: {"Content-type": "application/json"},
+  })
+
+  if(!res.ok) {
+    const err = await res.json()
+    throw new Error(err.Error || "deleteTodo fail")
+  }
+  return (await res.json()) as Todo
+}

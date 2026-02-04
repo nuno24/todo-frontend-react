@@ -1,7 +1,7 @@
 import './App.css';
 import { useEffect, useState } from 'react'
 import TodoList from './components/TodoList'
-import { createTodo, getTodos } from './services/todos';
+import { createTodo, deleteTodo, getTodos } from './services/todos';
 import CreateTodoForm from './components/CreateTodoForm';
 import type { Todo } from './types/todo';
 
@@ -40,6 +40,16 @@ function App() {
     }
   }
 
+  async function handleDelete(id:string) {
+    setError('')
+    try {
+      const res = await deleteTodo(id)
+      await fetchTodos()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete todo')
+    }
+  }
+
   return (
     <div className="App">
       <h1>Todo App</h1>
@@ -51,6 +61,7 @@ function App() {
       />
       <TodoList 
         todos={todos}
+        onDelete={handleDelete}
       />
     </div>
   );
