@@ -1,6 +1,10 @@
+type CreateTodoFormProps = {
+  description: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onDescriptionChange: (value: string) => void;
+};
 
-
-const CreateTodoForm = ({ description, onSubmit, onDescriptionChange}) => {
+const CreateTodoForm = ({ description, onSubmit, onDescriptionChange }: CreateTodoFormProps) => {
 
   return(
     <div>

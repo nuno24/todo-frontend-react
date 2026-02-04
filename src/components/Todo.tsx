@@ -1,10 +1,17 @@
+import type { Todo as TodoType } from '../types/todo';
 
+type TodoProps = {
+  todo: TodoType;
+};
 
-const Todo = ({todo}) => {
+const Todo = ({ todo }: TodoProps) => {
   
   
   return(
     <div>
+      <input 
+        type='checkbox'
+      />
       <h2>{todo.description}</h2>
       <p>{todo.id}</p>
       <div>
