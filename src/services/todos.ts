@@ -1,7 +1,19 @@
 import type { Todo } from '../types/todo';
 
-export const getTodos = async (): Promise<Todo[]> => {
-  const res = await fetch('http://localhost:3000/todos',{
+export type TodoFilter = 'all' | 'complete' | 'incomplete'
+export type TodoOrderBy = 'description' | 'created_at'
+
+export const getTodos = async (
+  filter: TodoFilter, orderBy: TodoOrderBy
+): Promise<Todo[]> => {
+
+  const url = new URL('http://localhost:3000/todos')
+  url.searchParams.set('filter', filter)
+  if(orderBy) {
+    url.searchParams.set('orderBy', orderBy)
+  }
+
+  const res = await fetch(url,{
     method: 'GET',
     headers: {"Content-type": "application/json"}}
   )

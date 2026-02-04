@@ -5,15 +5,26 @@ import { createTodo, deleteTodo, getTodos } from './services/todos';
 import CreateTodoForm from './components/CreateTodoForm';
 import type { Todo } from './types/todo';
 
+type Sort = 'created' | 'asc' | 'desc'
+
 function App() {
   const [todos, setTodos] = useState<Todo[]>([])
-  const [error, setError] = useState<string>('')
   const [description, setDescription] = useState<string>('')
 
+  const [hideCompleted, setHideCompleted] = useState(false)
+  const [sort, setSort] = useState('created')
+
+  const [error, setError] = useState<string>('')
+
+  function cycleSort() {
+    setSort(prev => (prev === 'created' ? 'asc' : prev === 'asc' ? 'desc' : 'created'))
+  }
+
   async function fetchTodos() {
-    const data = await getTodos()
-    setTodos(data)
-    console.log(data)
+    const filter = hideCompleted ? 'incomplete' : 'all'
+    const orderBy = sort === 'created' ? 'created_at' : 'description'
+    const data = await getTodos(filter, orderBy)
+    setTodos(sort === 'desc' ? [...data].reverse() : data)
   }
 
   useEffect(() => {
@@ -24,7 +35,7 @@ function App() {
         setError(err instanceof Error ? err.message : 'Failed to fetch todos')
       }
     })()
-  }, [])
+  }, [hideCompleted, sort])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -43,7 +54,7 @@ function App() {
   async function handleDelete(id:string) {
     setError('')
     try {
-      const res = await deleteTodo(id)
+      await deleteTodo(id)
       await fetchTodos()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete todo')
@@ -62,6 +73,9 @@ function App() {
       <TodoList 
         todos={todos}
         onDelete={handleDelete}
+        hideCompleted={hideCompleted}
+        onHideCompletedChange={setHideCompleted}
+        onCycleSort={cycleSort}
       />
     </div>
   );
