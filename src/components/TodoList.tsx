@@ -8,10 +8,12 @@ type TodoListProps = {
   hideCompleted: boolean
   onHideCompletedChange: (value: boolean) => void
   onCycleSort: () => void
+  onToggleState: (id:string, state: 'COMPLETE' | 'INCOMPLETE') => void
+  onEdit: (id: string, description: string) => void
 };
 
 
-const TodoList = ({ todos, onDelete, hideCompleted, onHideCompletedChange, onCycleSort }: TodoListProps) => {
+const TodoList = ({ todos, onDelete, hideCompleted, onHideCompletedChange, onCycleSort,onToggleState, onEdit }: TodoListProps) => {
   if (todos.length === 0) return <h2>No TODOS</h2>
 
 
@@ -24,6 +26,8 @@ const TodoList = ({ todos, onDelete, hideCompleted, onHideCompletedChange, onCyc
             key={todo.id}
             todo={todo}
             onDelete={onDelete}
+            onToggleState={onToggleState}
+            onEdit={onEdit}
           />
         ))
         }

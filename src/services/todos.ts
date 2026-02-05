@@ -3,6 +3,10 @@ import type { Todo } from '../types/todo';
 export type TodoFilter = 'all' | 'complete' | 'incomplete'
 export type TodoOrderBy = 'description' | 'created_at'
 
+export type CreateTodoInput = {
+  description: string;
+};
+
 export const getTodos = async (
   filter: TodoFilter, orderBy: TodoOrderBy
 ): Promise<Todo[]> => {
@@ -24,10 +28,6 @@ export const getTodos = async (
   }
   return (await res.json()) as Todo[]
 }
-
-export type CreateTodoInput = {
-  description: string;
-};
 
 export const createTodo = async (input: CreateTodoInput): Promise<Todo> => {
   const res = await fetch('http://localhost:3000/todos', {
@@ -52,6 +52,25 @@ export const deleteTodo = async (id: string) => {
   if(!res.ok) {
     const err = await res.json()
     throw new Error(err.Error || "deleteTodo fail")
+  }
+  return (await res.json()) as Todo
+}
+
+export type UpdateTodoInputs = {
+  description?: string
+  state?: string
+}
+
+export const updateTodo = async(id: string, input: UpdateTodoInputs) => {
+  const res = await fetch(`http://localhost:3000/todo/${id}`, {
+    method: 'PATCH',
+    headers: {"Content-type": "application/json"},
+    body: JSON.stringify(input)
+  })
+
+  if(!res.ok) {
+    const err = await res.json()
+    throw new Error(err.Error || "updateTodo fail")
   }
   return (await res.json()) as Todo
 }

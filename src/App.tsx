@@ -1,7 +1,7 @@
 import './App.css';
 import { useEffect, useState } from 'react'
 import TodoList from './components/TodoList'
-import { createTodo, deleteTodo, getTodos } from './services/todos';
+import { createTodo, deleteTodo, getTodos, updateTodo } from './services/todos';
 import CreateTodoForm from './components/CreateTodoForm';
 import type { Todo } from './types/todo';
 
@@ -17,7 +17,7 @@ function App() {
   const [error, setError] = useState<string>('')
 
   function cycleSort() {
-    setSort(prev => (prev === 'created' ? 'asc' : prev === 'asc' ? 'desc' : 'created'))
+    setSort(prev => (prev === 'created' ? 'desc' : prev === 'desc' ? 'asc' : 'created'))
   }
 
   async function fetchTodos() {
@@ -61,6 +61,27 @@ function App() {
     }
   }
 
+  async function handleToggleState(id: string, state: 'COMPLETE' | 'INCOMPLETE') {
+    setError('')
+
+    try {
+      await updateTodo(id, {state})
+      await fetchTodos()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to Toggle todo state')
+    }
+  }
+
+  async function handleEdit(id: string, description: string) {
+    setError('')
+    try {
+      await updateTodo(id, {description})
+      await fetchTodos()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update todo desc.')
+    }
+  }
+
   return (
     <div className="App">
       <h1>Todo App</h1>
@@ -76,6 +97,8 @@ function App() {
         hideCompleted={hideCompleted}
         onHideCompletedChange={setHideCompleted}
         onCycleSort={cycleSort}
+        onToggleState={handleToggleState}
+        onEdit={handleEdit}
       />
     </div>
   );
