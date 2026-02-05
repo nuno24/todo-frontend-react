@@ -36,10 +36,14 @@ export function TodosProvider({children}: {children: React.ReactNode}) {
   }
 
   async function fetchTodos() {
-    const filter = hideCompleted ? 'incomplete' : 'all'
-    const orderBy = sort === 'created' ? 'created_at' : 'description'
-    const data = await getTodos(filter, orderBy)
-    setTodos(sort === 'desc' ? [...data].reverse() : data)
+    try{
+      const filter = hideCompleted ? 'incomplete' : 'all'
+      const orderBy = sort === 'created' ? 'created_at' : 'description'
+      const data = await getTodos(filter, orderBy)
+      setTodos(sort === 'desc' ? [...data].reverse() : data)
+    } catch(err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch todos')
+    }
   }
 
   useEffect(() => {

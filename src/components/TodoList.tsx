@@ -11,24 +11,25 @@ const TodoList = () => {
 
 
   return(
-    <div>
-      <button onClick={cycleSort}>Tasks</button>
-      <ul>
+    <div className='todoList'>
+      <div className='tasksHeader'>
+        <button className='tasksHeaderBtn' onClick={cycleSort}>Tasks</button>
+      </div>
+      <ul className='todoItems'>
         {todos.map((todo: TodoType) => (
           <Todo 
             key={todo.id}
             todo={todo}
           />
-        ))
-        }
+        ))}
       </ul>
-      <label>
+      <label className='todoFooter'>
+        Hide Completed
         <input
           type='checkbox'
           checked={hideCompleted}
           onChange={e => setHideCompleted(e.target.checked)}
         />
-        Hide Completed
       </label>
     </div>
   )

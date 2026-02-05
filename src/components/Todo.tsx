@@ -14,43 +14,55 @@ const Todo = ({ todo}: TodoProps) => {
   const checked = todo.state === 'COMPLETE'
   
   return(
-    <div>
-      <input 
-        type='checkbox'
-        checked={checked}
-        onChange={(e) => handleToggleState(todo.id, e.target.checked ? 'COMPLETE' : 'INCOMPLETE')}
-      />
-
+    <li className={`todoItem ${checked ? 'todoItem--done' : ''}`}>
       {isEditing ? (
-        <form onSubmit={(e) => {
-          e.preventDefault()
-          setIsEditing(false)
-          handleEdit(todo.id, newDescription)
-        }}>
+        <form 
+          className='todoEditForm'
+          onSubmit={(e) => {
+            e.preventDefault()
+            setIsEditing(false)
+            handleEdit(todo.id, newDescription)
+          }}
+        >
+          <input className="todoCheckbox" type="checkbox" checked={checked} disabled />
           <input
+            className='todoEditInput'
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
           />
-          <button type='submit'>Save</button>
-          <button
-            onClick={() => {
-              setNewDescription(todo.description)
-              setIsEditing(false)
-            }}
-          >Cancel</button>
+          <div className='todoActions'>
+            <button type='submit' className='todoActionBtn'>Save</button>
+            <button
+              className='todoActionBtn'
+              onClick={() => {
+                setNewDescription(todo.description)
+                setIsEditing(false)
+              }}
+            >Cancel</button>
+          </div>
         </form>
       ) : (
-      <div>
-        <h2>{todo.description}</h2>
-        <p>{todo.id}</p>
-        <div>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => handleDelete(todo.id)}>Delete</button>
+      <>
+        <input 
+          className='todoCheckbox'
+          type='checkbox'
+          checked={checked}
+          onChange={(e) => handleToggleState(todo.id, e.target.checked ? 'COMPLETE' : 'INCOMPLETE')}
+        />
+        <span className='todoTextDesc'>{todo.description}</span>
+        <div className='todoActions'>
+          <button 
+            className='todoActionBtn'
+            onClick={() => setIsEditing(true)}>Edit</button>
+          <button 
+            className='todoActionBtn'
+            onClick={() => handleDelete(todo.id)}>Delete</button>
         </div>
-      </div>
+        <p className='todoText'>{todo.id}</p>
+      </>
       )}
 
-    </div>
+    </li>
   )
 }
 

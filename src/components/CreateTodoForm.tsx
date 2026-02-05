@@ -7,14 +7,16 @@ type CreateTodoFormProps = {
 const CreateTodoForm = ({ description, onSubmit, onDescriptionChange }: CreateTodoFormProps) => {
 
   return(
-    <div>
+    <div className="createForm">
       <form onSubmit={onSubmit}>
         <input
+          className="createInput"
+          type="text"
           placeholder="To do description"
           value={description}
           onChange={(e) => {onDescriptionChange(e.target.value)}}
         />
-        <button>Create</button>
+        <button className="createButton">Create</button>
       </form>
     </div>
   )
