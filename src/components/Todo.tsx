@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import type { Todo as TodoType } from '../types/todo';
+import { useTodos } from '../context/TodosContext';
 
 type TodoProps = {
   todo: TodoType
-  onDelete: (id: string) => void
-  onToggleState: (id:string, state: 'COMPLETE' | 'INCOMPLETE') => void
-  onEdit: (id: string, description: string) => void
 };
 
-const Todo = ({ todo, onDelete, onToggleState, onEdit }: TodoProps) => {
+const Todo = ({ todo}: TodoProps) => {
+  const { handleDelete, handleToggleState, handleEdit} = useTodos()
   const [isEditing, setIsEditing] = useState(false)
   const [newDescription, setNewDescription] = useState(todo.description)
 
@@ -19,14 +18,14 @@ const Todo = ({ todo, onDelete, onToggleState, onEdit }: TodoProps) => {
       <input 
         type='checkbox'
         checked={checked}
-        onChange={(e) => onToggleState(todo.id, e.target.checked ? 'COMPLETE' : 'INCOMPLETE')}
+        onChange={(e) => handleToggleState(todo.id, e.target.checked ? 'COMPLETE' : 'INCOMPLETE')}
       />
 
       {isEditing ? (
         <form onSubmit={(e) => {
           e.preventDefault()
           setIsEditing(false)
-          onEdit(todo.id, newDescription)
+          handleEdit(todo.id, newDescription)
         }}>
           <input
             value={newDescription}
@@ -46,7 +45,7 @@ const Todo = ({ todo, onDelete, onToggleState, onEdit }: TodoProps) => {
         <p>{todo.id}</p>
         <div>
           <button onClick={() => setIsEditing(true)}>Edit</button>
-          <button onClick={() => onDelete(todo.id)}>Delete</button>
+          <button onClick={() => handleDelete(todo.id)}>Delete</button>
         </div>
       </div>
       )}
