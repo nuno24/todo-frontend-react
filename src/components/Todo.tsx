@@ -58,7 +58,7 @@ const Todo = ({ todo}: TodoProps) => {
             className='todoActionBtn'
             onClick={() => handleDelete(todo.id)}>Delete</button>
         </div>
-        <p className='todoText'>{todo.id}</p>
+        <p className='todoTextId'>{todo.id}</p>
       </>
       )}
 

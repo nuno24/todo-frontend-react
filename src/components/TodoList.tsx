@@ -7,7 +7,7 @@ import { useTodos } from '../context/TodosContext';
 const TodoList = () => {
   const {todos, hideCompleted, setHideCompleted, cycleSort} = useTodos()
 
-  if (todos.length === 0) return <h2>No TODOS</h2>
+  if (todos.length === 0) return <h2>No TODOS! Create one above.</h2>
 
 
   return(
@@ -26,6 +26,7 @@ const TodoList = () => {
       <label className='todoFooter'>
         Hide Completed
         <input
+          className='todoCheckbox'
           type='checkbox'
           checked={hideCompleted}
           onChange={e => setHideCompleted(e.target.checked)}
